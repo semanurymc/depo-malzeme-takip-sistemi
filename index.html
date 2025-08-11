@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depo Malzeme Takip Sistemi - Endüstriyel Stok Yönetimi</title>
+    <meta name="description" content="Profesyonel depo malzeme takip sistemi. Stok yönetimi, talep sistemi ve onay süreçleri için modern web uygulaması.">
+    <meta name="keywords" content="depo, stok, malzeme, takip, yönetim, endüstri">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar">
+                <div class="nav-brand">
+                    <h1>🏭 Depo Malzeme Takip Sistemi</h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="#stok" class="nav-link">Stok Durumu</a>
+                    <a href="#bekleyen" class="nav-link">Bekleyen Talepler</a>
+                    <a href="#onaylanan" class="nav-link">Onaylanan Talepler</a>
+                    <button class="btn btn-primary" onclick="showHelp()">Yardım</button>
+                </div>
+            </nav>
+            <div class="hero-section">
+                <h2>Endüstriyel Stok Yönetimi Çözümü</h2>
+                <p>Modern ve kullanıcı dostu depo malzeme takip sistemi ile stoklarınızı kolayca yönetin</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalItems">10</span>
+                        <span class="stat-label">Toplam Malzeme</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="pendingCount">0</span>
+                        <span class="stat-label">Bekleyen Talep</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="approvedCount">0</span>
+                        <span class="stat-label">Onaylanan Talep</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Stok Durumu Bölümü -->
+            <section id="stok" class="stock-section">
+                <div class="section-header">
+                    <h2>📦 Stok Durumu</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="exportToCSV()">CSV İndir</button>
+                        <button class="btn btn-primary" onclick="refreshData()">Yenile</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="stockTable">
+                        <thead>
+                            <tr>
+                                <th>Kod</th>
+                                <th>Malzeme Adı</th>
+                                <th>Miktar</th>
+                                <th>Raf Bilgisi</th>
+                                <th>Durum</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTableBody">
+                            <!-- JavaScript ile doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Talep Miktarı Modal -->
+            <div id="requestModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3>Talep Miktarı</h3>
+                    <div class="modal-body">
+                        <p><strong>Malzeme:</strong> <span id="modalItemName"></span></p>
+                        <p><strong>Mevcut Stok:</strong> <span id="modalCurrentStock"></span></p>
+                        <label for="requestAmount">Talep Miktarı:</label>
+                        <input type="number" id="requestAmount" min="1" max="1000">
+                        <div class="modal-buttons">
+                            <button id="confirmRequest" class="btn btn-primary">Talep Et</button>
+                            <button id="cancelRequest" class="btn btn-secondary">İptal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onay Bekleyen Talepler Bölümü -->
+            <section id="bekleyen" class="pending-section">
+                <div class="section-header">
+                    <h2>⏳ Onay Bekleyen Talepler</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="clearAllPending()">Tümünü Temizle</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="pendingTable">
+                        <thead>
+                            <tr>
+                                <th>Talep No</th>
+                                <th>Malzeme Kodu</th>
+                                <th>Malzeme Adı</th>
+                                <th>Talep Miktarı</th>
+                                <th>Talep Tarihi</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingTableBody">
+                            <!-- JavaScript ile doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Onaylanan Talepler Bölümü -->
+            <section id="onaylanan" class="approved-section">
+                <div class="section-header">
+                    <h2>✅ Onaylanan Talepler</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="exportApprovedToCSV()">Rapor İndir</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="approvedTable">
+                        <thead>
+                            <tr>
+                                <th>Talep No</th>
+                                <th>Malzeme Kodu</th>
+                                <th>Malzeme Adı</th>
+                                <th>Talep Miktarı</th>
+                                <th>Onay Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvedTableBody">
+                            <!-- JavaScript ile doldurulacak -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Depo Malzeme Takip Sistemi</h3>
+                    <p>Endüstriyel stok yönetimi için modern web çözümü</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Özellikler</h4>
+                    <ul>
+                        <li>Gerçek zamanlı stok takibi</li>
+                        <li>Talep onay sistemi</li>
+                        <li>Raporlama araçları</li>
+                        <li>Mobil uyumlu tasarım</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>İletişim</h4>
+                    <p>📧 info@depotakip.com</p>
+                    <p>📞 +90 212 555 0123</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Depo Malzeme Takip Sistemi. Tüm hakları saklıdır.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Yardım Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHelpModal()">&times;</span>
+            <h3>Kullanım Kılavuzu</h3>
+            <div class="help-content">
+                <div class="help-section">
+                    <h4>📦 Stok Durumu</h4>
+                    <p>Mevcut malzeme stoklarını görüntüleyin ve talep oluşturun.</p>
+                </div>
+                <div class="help-section">
+                    <h4>⏳ Talep Oluşturma</h4>
+                    <p>1. "Talep Et" butonuna tıklayın<br>
+                    2. İstediğiniz miktarı girin<br>
+                    3. "Talep Et" ile onaylayın</p>
+                </div>
+                <div class="help-section">
+                    <h4>✅ Talep Onaylama</h4>
+                    <p>Mühendis olarak bekleyen talepleri inceleyin ve "Onayla" butonu ile onaylayın.</p>
+                </div>
+                <div class="help-section">
+                    <h4>📊 Raporlama</h4>
+                    <p>CSV formatında veri indirme ve raporlama özellikleri kullanılabilir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

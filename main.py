@@ -173,18 +173,24 @@ with tab1:
     
     with col2:
         # Stok durumu pasta grafiği
-        status_counts = stock_df['status_class'].value_counts()
-        fig = px.pie(
-            values=status_counts.values,
-            names=status_counts.index,
-            title="Stok Durumu Dağılımı",
-            color_discrete_map={
-                'critical': '#ff4444',
-                'warning': '#ffaa00',
-                'normal': '#00aa00'
-            }
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        try:
+            if not stock_df.empty:
+                status_counts = stock_df['status_class'].value_counts()
+                fig = px.pie(
+                    values=status_counts.values,
+                    names=status_counts.index,
+                    title="Stok Durumu Dagilimi",
+                    color_discrete_map={
+                        'critical': '#ff4444',
+                        'warning': '#ffaa00',
+                        'normal': '#00aa00'
+                    }
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("Stok durumu verisi bulunamadı.")
+        except Exception as e:
+            st.error(f"Stok durumu grafik hatası: {e}")
     
     # Talep oluşturma
     st.subheader("Yeni Talep Oluştur")
@@ -280,26 +286,38 @@ with tab4:
     
     with col1:
         # Stok miktarı grafiği
-        fig1 = px.bar(
-            stock_df,
-            x='name',
-            y='quantity',
-            title="Malzeme Stok Miktarları",
-            labels={'name': 'Malzeme', 'quantity': 'Miktar'}
-        )
-        fig1.update_xaxis(tickangle=45)
-        st.plotly_chart(fig1, use_container_width=True)
+        try:
+            if not stock_df.empty:
+                fig1 = px.bar(
+                    stock_df,
+                    x='name',
+                    y='quantity',
+                    title="Malzeme Stok Miktarları",
+                    labels={'name': 'Malzeme', 'quantity': 'Miktar'}
+                )
+                fig1.update_xaxis(tickangle=45)
+                st.plotly_chart(fig1, use_container_width=True)
+            else:
+                st.info("Stok verisi bulunamadı.")
+        except Exception as e:
+            st.error(f"Grafik oluşturma hatası: {e}")
     
     with col2:
         # Lokasyon bazli stok dagilimi
-        location_stats = stock_df.groupby('location')['quantity'].sum().reset_index()
-        fig2 = px.pie(
-            location_stats,
-            values='quantity',
-            names='location',
-            title="Lokasyon Bazlı Stok Dağılımı"
-        )
-        st.plotly_chart(fig2, use_container_width=True)
+        try:
+            if not stock_df.empty:
+                location_stats = stock_df.groupby('location')['quantity'].sum().reset_index()
+                fig2 = px.pie(
+                    location_stats,
+                    values='quantity',
+                    names='location',
+                    title="Lokasyon Bazli Stok Dagilimi"
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+            else:
+                st.info("Lokasyon verisi bulunamadı.")
+        except Exception as e:
+            st.error(f"Pasta grafik oluşturma hatası: {e}")
 
 # Sidebar
 with st.sidebar:

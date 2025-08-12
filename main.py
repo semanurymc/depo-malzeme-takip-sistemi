@@ -79,14 +79,17 @@ def get_stock_status(quantity):
 
 def save_data():
     """Verileri JSON dosyasına kaydet"""
-    data = {
-        'stock_items': st.session_state.stock_items,
-        'pending_requests': st.session_state.pending_requests,
-        'approved_requests': st.session_state.approved_requests,
-        'request_counter': st.session_state.request_counter
-    }
-    with open('depo_data.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2, default=str)
+    try:
+        data = {
+            'stock_items': st.session_state.stock_items,
+            'pending_requests': st.session_state.pending_requests,
+            'approved_requests': st.session_state.approved_requests,
+            'request_counter': st.session_state.request_counter
+        }
+        with open('depo_data.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2, default=str)
+    except Exception as e:
+        st.error(f"Veri kaydetme hatası: {e}")
 
 def load_data():
     """Verileri JSON dosyasından yükle"""
@@ -97,7 +100,8 @@ def load_data():
             st.session_state.pending_requests = data.get('pending_requests', [])
             st.session_state.approved_requests = data.get('approved_requests', [])
             st.session_state.request_counter = data.get('request_counter', 1)
-    except FileNotFoundError:
+    except (FileNotFoundError, Exception):
+        # Dosya bulunamazsa veya hata olursa varsayılan verileri kullan
         pass
 
 # Verileri yükle

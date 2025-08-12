@@ -273,7 +273,7 @@ with tab3:
 with tab4:
     st.header("📊 Raporlar")
     
-    # Stok verilerini yeniden oluştur
+    # Stok verilerini yeniden olustur
     stock_df = pd.DataFrame(st.session_state.stock_items)
     
     col1, col2 = st.columns(2)
@@ -291,7 +291,7 @@ with tab4:
         st.plotly_chart(fig1, use_container_width=True)
     
     with col2:
-        # Lokasyon bazlı stok dağılımı
+        # Lokasyon bazli stok dagilimi
         location_stats = stock_df.groupby('location')['quantity'].sum().reset_index()
         fig2 = px.pie(
             location_stats,

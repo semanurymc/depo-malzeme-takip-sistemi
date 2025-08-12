@@ -269,6 +269,9 @@ with tab3:
 with tab4:
     st.header("📊 Raporlar")
     
+    # Stok verilerini yeniden oluştur
+    stock_df = pd.DataFrame(st.session_state.stock_items)
+    
     col1, col2 = st.columns(2)
     
     with col1:
